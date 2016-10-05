@@ -4,6 +4,9 @@ var object ={
 };
   for (var j = 0; j < words.length; j++){
     var letterArray = words[j].split("");
+    if(letterArray[j] === " "){
+
+    }
     for(var i = 0; i < letterArray.length; i++){
       var x = letterArray[i]
       if(object[x] === undefined){
