@@ -47,7 +47,7 @@ function calBird(companySalesData){
     var y = companySalesData[i].salesPerCompany;
     var z = companySalesData[i].totalTax;
 
-    console.log(x,y,z);
+    //console.log(x,y,z);
     if(!obj[x]){
       obj[x] = {};
       obj[x]["sales"] = y;
@@ -62,7 +62,7 @@ function calBird(companySalesData){
 
 //var results = salesTaxReport(companySalesData, salesTaxRates);
 //console.log(salesTaxRates.AB);
-calculateSalesTax(companySalesData, salesTaxRates);
 //console.log(companySalesData[0].salesPerCompany);
 //console.log(companySalesData[0].totalTax);
+calculateSalesTax(companySalesData, salesTaxRates);
 console.log(calBird(companySalesData));

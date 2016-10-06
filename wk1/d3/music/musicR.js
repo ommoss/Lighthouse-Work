@@ -38,21 +38,32 @@ var library = {
       var y = x[index].name;
       var i = x[index].id;
       var h = x[index].artist;
-      console.log(i, ": ", y, " by ",  h, " (", z, ")");
+      console.log(i, ": ", y, " by ",  x[index].artist, " (", x[index].album, ")");
     }
   },
   printPlaylist: function (playlistId) {
     var playlist = this.playlists[playlistId];
-    var x = playlist.name;
-    var y = playlist.id;
-    var z = playlist.tracks.length;
     var libraryTracks = this.tracks;
-    console.log(y, ": ", x, " - ", z, " tracks");
+    console.log(
+      playlist.id, ": ",
+      playlist.name, " - ",
+      playlist.tracks.length,
+      this.multiple(playlist.tracks.length)
+      );
     for (var tracks of playlist.tracks) {
       var currentTrackNameArtist = tracks + ": " + libraryTracks[tracks].name + " by " + libraryTracks[tracks].artist;
       var currentAlbum = " (" + libraryTracks[tracks].album + ")";
       var bigLine = currentTrackNameArtist + currentAlbum;
       console.log(currentTrackNameArtist + currentAlbum);
+    }
+  },
+  multiple: function (length){
+    if(length === 0){
+      return "no tracks";
+    }else if(length === 1){
+      return "track";
+    }else{
+      return "tracks";
     }
   },
   addTrackToPlaylist: function (trackId, playlistId) {
@@ -65,56 +76,82 @@ var library = {
     return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
   },
   addTrack: function (name, artist, album) {
-    var x = this.tracks;
     var y = this.uid();
-    var z = {
+    var newTrack = {
       id: y,
       name: name,
       artist: artist,
       album: album,
     };
-    x[y] = z;
-    //console.log(x);
+    this.tracks[y] = newTrack;
+    //console.log(this.tracks);
   },
   addPlaylist: function (name) {
-    var x = this;
     var y = this.uid();
+   // console.log(y);
     var z = {
       id: y,
       name: name,
       tracks: [],
     };
-    x.playlists[y] = z;
+    this.playlists[y] = z;
     //console.log(x);
   },
   printSearchResults: function(query) {
-  var x = query.toLowerCase();
-  var exp = new RegExp(x);
-  var y = this.tracks
-  var results = [];
-  for(index in y){
-    var q = y[index].name;
-    q = q.toLowerCase();
-    var w = y[index].artist;
-    w = w.toLowerCase();
-    var e = y[index].album;
-    e = e.toLowerCase();
-    if(q.search(exp) != -1){
-     console.log(y[index]);
+    console.log("Searching for", query, "This will only take a second!");
+    var x = query.toLowerCase();
+    var exp = new RegExp(x);
+    var y = this.tracks
+    var j = Math.floor((Math.random()*5)+1);
+
+    function searching(){
+      for (var h = 0; h < j; h++){
+        setTimeout(function times(){
+          console.log("Searching...")
+        }, ((h * 1000) + 1000));
+       }
     }
-    if(w.search(exp) != -1){
-      console.log(y[index])
-    }
-    if(e.search(exp) != -1){
-      console.log(y[index]);
-    }
+    searching();
+    setTimeout(function (){
+      var results = {};
+      for(index in y){
+        var q = y[index].name;
+        q = q.toLowerCase();
+        var w = y[index].artist;
+        w = w.toLowerCase();
+        var e = y[index].album;
+        e = e.toLowerCase();
+        if(q.search(exp) != -1){
+          if (!results[index]){
+            results[index] = y[index];
+          }
+        }
+        if(w.search(exp) != -1){
+          if (!results[index]){
+            results[index] = y[index];
+          }
+        }
+        if(e.search(exp) != -1){
+          if (!results[index]){
+            results[index] = y[index];
+          }
+        }
+      }
+      if(Object.keys(results).length === 0){
+        console.log("Nothing found");
+      }else{
+        console.log("Results are: ");
+        for(t in results){
+         console.log(t, ": ", "Name =", results[t].name, "Artist =", results[t].artist, "Album =", results[t].album  );
+        }
+      }
+    }, ((j * 1000) + 1000))
   }
-}
 }
 //library.printPlaylists();
 //library.printTracks();
-//library.printPlaylist('p01');
-library.addTrackToPlaylist("t01", 'p02');
-library.addTrack("R U Mine?", "Arctic Monkeeys", "AM");
-library.addPlaylist('housemix');
-//library.printSearchResults('c')
+//library.printPlaylist('p02');
+//library.addTrackToPlaylist("t01", 'p02');
+//library.addTrack("R U Mine?", "Arctic Monkeeys", "AM");
+//library.addPlaylist('housemix');
+library.printSearchResults('cage');
